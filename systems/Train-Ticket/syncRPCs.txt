@@ -1,0 +1,13 @@
+GET,/api/v1/basicservice/basic,6
+GET,/api/v1/priceservice/prices,1
+GET,/api/v1/routeservice/routes,8
+GET,/api/v1/stationservice/stations/id,10
+GET,/api/v1/ticketinfoservice/ticketinfo,6
+GET,/api/v1/travelservice/routes,2
+GET,/api/v1/travelservice/train_types,2
+POST,/api/v1/basicservice/basic/travel,1
+POST,/api/v1/orderservice/order/tickets,1
+POST,/api/v1/seatservice/seats/left_tickets,2
+POST,/api/v1/ticketinfoservice/ticketinfo,1
+GET,/api/v1/trainservice/trains,4
+GET,/api/v1/configservice/configs/DirectTicketAllocationProportion,2

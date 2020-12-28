@@ -1,0 +1,38 @@
+PUT _ingest/pipeline/jaeger
+{
+    "description": "Rewrite span",
+    "processors": [
+
+      {"script": {
+        "lang": "painless",
+        "source": """
+          ctx.traceId= ctx.traceID;
+          ctx.id= ctx.spanID;
+          ctx.timestamp= ctx.startTime;
+          ctx.name= ctx.process.serviceName + '_' + ctx.operationName;
+          for (int i = 0; i < ctx.tags.length; ++i) {
+            if(ctx.tags[i].key == 'span.kind'){
+              ctx.kind = ctx.tags[i].value.toUpperCase();
+            }
+            if(ctx.tags[i].key == 'experiment'){
+              ctx.experiment = ctx.tags[i].value;
+            }
+          }
+          for (int i = 0; i < ctx.references.length; ++i) {
+            if(ctx.references[i].refType == 'CHILD_OF'){
+              ctx.parentId = ctx.references[i].spanID;
+            }
+          }
+        """
+      }}
+
+    ]
+  }
+  
+  
+PUT /jaeger-span-*/_settings
+{
+    "index" : {
+        "default_pipeline" : "jaeger"
+    }
+}

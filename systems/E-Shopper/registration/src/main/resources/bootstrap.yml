@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: registration-server
+  session:
+    store-type: none
+  cloud:
+    config:
+      uri: http://config:8888
+      fail-fast: true
+      retry:
+        max-attempts: 300
+        max-interval: 1000
+      password: password
+      username: user
+
+eureka:
+  instance:
+    hostname: registration
+    prefer-ip-address: true
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    service-url:
+      defaultZone:  http://user:password@registration:1111/eureka/
+  server:
+      waitTimeInMsWhenSyncEmpty: 0

@@ -1,0 +1,26 @@
+[
+   [
+      {
+         "uri": "/api/v1/seatservice/seats/left_tickets",
+         "method": "POST",
+         "delay": 8
+      },
+      {
+         "uri": "/api/v1/ticketinfoservice/ticketinfo",
+         "method": "POST",
+         "delay": 16
+      }
+   ],
+   [
+      {
+         "uri": "/api/v1/basicservice/basic",
+         "method": "GET",
+         "delay": 4
+      },
+      {
+         "uri": "/api/v1/configservice/configs/DirectTicketAllocationProportion",
+         "method": "GET",
+         "delay": 11
+      }
+   ]
+]

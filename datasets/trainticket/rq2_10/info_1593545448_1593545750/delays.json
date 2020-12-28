@@ -1,0 +1,16 @@
+[
+   [
+      {
+         "uri": "/api/v1/orderservice/order/tickets",
+         "method": "POST",
+         "delay": 29
+      }
+   ],
+   [
+      {
+         "uri": "/api/v1/ticketinfoservice/ticketinfo",
+         "method": "GET",
+         "delay": 7
+      }
+   ]
+]

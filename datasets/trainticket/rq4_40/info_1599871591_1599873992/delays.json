@@ -1,0 +1,26 @@
+[
+   [
+      {
+         "uri": "/api/v1/priceservice/prices",
+         "method": "GET",
+         "delay": 9
+      },
+      {
+         "uri": "/api/v1/stationservice/stations/id",
+         "method": "GET",
+         "delay": 1
+      },
+      {
+         "uri": "/api/v1/trainservice/trains",
+         "method": "GET",
+         "delay": 3
+      }
+   ],
+   [
+      {
+         "uri": "/api/v1/ticketinfoservice/ticketinfo",
+         "method": "POST",
+         "delay": 37
+      }
+   ]
+]

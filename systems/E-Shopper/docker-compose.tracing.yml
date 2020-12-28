@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.3.0
+    environment:
+      - discovery.type=single-node
+      - STORAGE=elasticsearch
+      - ES_NODES=http://localhost:9200
+      - ES_USERNAME=user
+      - ES_PASSWORD=password
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+  kibana:
+    image: docker.elastic.co/kibana/kibana:6.3.0
+    environment:
+      SERVER_NAME: kibana.org 
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+    ports:
+      - 5601:5601
+  zipkin:
+    image: openzipkin/zipkin
+    environment:
+        - ES_PIPELINE=zipkin
+        - STORAGE_TYPE=elasticsearch
+        - ES_HOSTS=http://elasticsearch:9200
+        - ES_USERNAME=elastic
+        - ES_PASSWORD=changeme
+    ports:
+      - 9411:9411
+volumes:
+  esdata:
+    

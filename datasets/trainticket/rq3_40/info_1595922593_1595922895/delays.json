@@ -1,0 +1,31 @@
+[
+   [
+      {
+         "uri": "/api/v1/basicservice/basic",
+         "method": "GET",
+         "delay": 2
+      },
+      {
+         "uri": "/api/v1/travelservice/routes",
+         "method": "GET",
+         "delay": 5
+      },
+      {
+         "uri": "/api/v1/basicservice/basic/travel",
+         "method": "POST",
+         "delay": 10
+      }
+   ],
+   [
+      {
+         "uri": "/api/v1/configservice/configs/DirectTicketAllocationProportion",
+         "method": "GET",
+         "delay": 11
+      },
+      {
+         "uri": "/api/v1/travelservice/routes",
+         "method": "GET",
+         "delay": 11
+      }
+   ]
+]

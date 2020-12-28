@@ -1,0 +1,26 @@
+[
+   [
+      {
+         "uri": "/api/v1/travelservice/routes",
+         "method": "GET",
+         "delay": 15
+      }
+   ],
+   [
+      {
+         "uri": "/api/v1/ticketinfoservice/ticketinfo",
+         "method": "GET",
+         "delay": 3
+      },
+      {
+         "uri": "/api/v1/trainservice/trains",
+         "method": "GET",
+         "delay": 4
+      },
+      {
+         "uri": "/api/v1/travelservice/train_types",
+         "method": "GET",
+         "delay": 7
+      }
+   ]
+]

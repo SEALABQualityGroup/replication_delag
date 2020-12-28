@@ -1,0 +1,21 @@
+[
+   [
+      {
+         "uri": "/api/v1/priceservice/prices",
+         "method": "GET",
+         "delay": 35
+      }
+   ],
+   [
+      {
+         "uri": "/api/v1/configservice/configs/DirectTicketAllocationProportion",
+         "method": "GET",
+         "delay": 9
+      },
+      {
+         "uri": "/api/v1/ticketinfoservice/ticketinfo",
+         "method": "GET",
+         "delay": 3
+      }
+   ]
+]

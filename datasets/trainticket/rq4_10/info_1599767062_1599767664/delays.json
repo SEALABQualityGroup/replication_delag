@@ -1,0 +1,16 @@
+[
+   [
+      {
+         "uri": "/api/v1/routeservice/routes",
+         "method": "GET",
+         "delay": 6
+      }
+   ],
+   [
+      {
+         "uri": "/api/v1/priceservice/prices",
+         "method": "GET",
+         "delay": 36
+      }
+   ]
+]

@@ -1,0 +1,33 @@
+# Map the error path to error template (for Thymeleaf)
+error: path=/error
+
+# Discovery Server Access
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://user:password@registration:1111/eureka/
+
+      #  instance:
+      #    preferIpAddress: true
+      #    ip-address: localhost
+
+# HTTP Server
+server:
+  context-path: /items
+  port: ${ITEMS_SERVICE_PORT}  # HTTP (Tomcat) port
+  #address: 127.0.0.1
+  tomcat:
+    max-threads: 500
+
+logging:
+  level:
+    com.netflix.discovery.TimedSupervisorTask: OFF
+
+experiment:
+  findItemsRandomByIdProduct: 2,0,0,0,0,0,0,0,0,0
+  findItemRandom: 0,0,0,0,0,0,0,0,0,0 # Async
+  findFeaturesItemRandom: 33,0,0,0,0,0,0,0,0,0    # Async
+noise:
+  findItemsRandomByIdProduct: 0,0,0,0,0,0,0,0,0,0
+  findItemRandom: 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+  findFeaturesItemRandom: 0,0,0,0,0,0,0,0,0,0

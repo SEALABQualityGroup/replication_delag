@@ -1,0 +1,8 @@
+[
+   {
+      "uri": "/api/v1/orderservice/order",
+      "method": "GET",
+      "prob": 0.5,
+      "delay": 39
+   }
+]

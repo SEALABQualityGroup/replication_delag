@@ -1,0 +1,36 @@
+[
+   [
+      {
+         "uri": "/api/v1/stationservice/stations/id",
+         "method": "GET",
+         "delay": 2
+      },
+      {
+         "uri": "/api/v1/travelservice/train_types",
+         "method": "GET",
+         "delay": 8
+      },
+      {
+         "uri": "/api/v1/basicservice/basic/travel",
+         "method": "POST",
+         "delay": 16
+      }
+   ],
+   [
+      {
+         "uri": "/api/v1/configservice/configs/DirectTicketAllocationProportion",
+         "method": "GET",
+         "delay": 6
+      },
+      {
+         "uri": "/api/v1/trainservice/trains",
+         "method": "GET",
+         "delay": 3
+      },
+      {
+         "uri": "/api/v1/travelservice/routes",
+         "method": "GET",
+         "delay": 6
+      }
+   ]
+]

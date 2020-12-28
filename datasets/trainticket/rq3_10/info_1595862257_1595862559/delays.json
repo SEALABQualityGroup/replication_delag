@@ -1,0 +1,36 @@
+[
+   [
+      {
+         "uri": "/api/v1/basicservice/basic",
+         "method": "GET",
+         "delay": 2
+      },
+      {
+         "uri": "/api/v1/priceservice/prices",
+         "method": "GET",
+         "delay": 10
+      },
+      {
+         "uri": "/api/v1/stationservice/stations/id",
+         "method": "GET",
+         "delay": 1
+      }
+   ],
+   [
+      {
+         "uri": "/api/v1/travelservice/routes",
+         "method": "GET",
+         "delay": 7
+      },
+      {
+         "uri": "/api/v1/travelservice/train_types",
+         "method": "GET",
+         "delay": 7
+      },
+      {
+         "uri": "/api/v1/seatservice/seats/left_tickets",
+         "method": "POST",
+         "delay": 7
+      }
+   ]
+]

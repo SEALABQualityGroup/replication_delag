@@ -1,0 +1,16 @@
+[
+   [
+      {
+         "uri": "/api/v1/stationservice/stations/id",
+         "method": "GET",
+         "delay": 3
+      }
+   ],
+   [
+      {
+         "uri": "/api/v1/trainservice/trains",
+         "method": "GET",
+         "delay": 11
+      }
+   ]
+]

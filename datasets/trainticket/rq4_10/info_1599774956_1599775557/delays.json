@@ -1,0 +1,16 @@
+[
+   [
+      {
+         "uri": "/api/v1/basicservice/basic",
+         "method": "GET",
+         "delay": 5
+      }
+   ],
+   [
+      {
+         "uri": "/api/v1/travelservice/train_types",
+         "method": "GET",
+         "delay": 13
+      }
+   ]
+]

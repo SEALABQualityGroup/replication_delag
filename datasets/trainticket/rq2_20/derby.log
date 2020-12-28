@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Wed Jul 01 22:11:59 CEST 2020:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-0173-0c01-eb5d-00003a26bc70 
+on database directory /home/luca/ylatency/data/trainticket_distance_20/metastore_db with class loader org.apache.spark.sql.hive.client.IsolatedClientLoader$$anon$1@38b3cb7f 
+Loaded from file:/opt/spark-2.3.1/jars/derby-10.12.1.1.jar
+java.vendor=Private Build
+java.runtime.version=1.8.0_252-8u252-b09-1~18.04-b09
+user.dir=/home/luca/ylatency/data/trainticket_distance_20
+os.name=Linux
+os.arch=amd64
+os.version=4.15.0-88-generic
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
