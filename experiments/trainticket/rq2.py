@@ -146,7 +146,6 @@ for i in ['00', '05', '10', '15', '20']:
         traces = (spark.read.option('mergeSchema', 'true')
                   .parquet(datapath + '/%d_%d.parquet' % (from_, to)))
 
-        print(traces.count())
         sla = traces[traces['experiment'] < num_pat].toPandas().min()[frontend]
         for name, algo, q, num_rep in algorithms:
             random.seed(33)
