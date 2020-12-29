@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+# In[1]:
+
 
 import pandas as pd
 from experiments.utils import sparksession, Q, QClust
@@ -10,18 +12,18 @@ from operator import itemgetter
 import time
 import random
 import numpy as np
-
 from sklearn.cluster import estimate_bandwidth
 
 frontend = 'ts-travel-service_queryInfo'
 get_rpcs = lambda traces: [c for c in traces.columns if c != 'traceId' and c != 'experiment' and c != frontend]
+
 
 spark = sparksession()
 
 
 def kclustering(traces, sla, Clustering):
     rpcs = get_rpcs(traces)
-    anomalytraces = traces[traces[frontend] > sla]
+    anomalytraces = traces[traces[frontend]>sla]
     dflist = []
     for k in range(2, 11):
         df = anomalytraces.select(['experiment', 'traceId'] + rpcs).toPandas()
@@ -35,12 +37,13 @@ def hierarchical(traces, sla):
     return kclustering(traces, sla, AgglomerativeClustering)
 
 
+
 def kmeans(traces, sla):
     return kclustering(traces, sla, KMeans)
 
 
 def meanshift(traces, sla):
-    anomalytraces = traces[traces[frontend] > sla]
+    anomalytraces = traces[traces[frontend]>sla]
     rpcs = get_rpcs(traces)
     df = anomalytraces.select(['experiment', 'traceId'] + rpcs).toPandas()
     clust = MeanShift(5)
@@ -48,22 +51,23 @@ def meanshift(traces, sla):
     return df
 
 
+
 def split_based(traces, sla, explain):
-    anomalytraces = traces[traces[frontend] > sla]
-    min_bin_freq = anomalytraces.count() * 0.05
-    bandwidth = estimate_bandwidth(traces.toPandas()[[frontend]], quantile=0.1)
+    anomalytraces = traces[traces[frontend]>sla]
+    min_bin_freq = anomalytraces.count()*0.05
+    bandwidth =  estimate_bandwidth(traces.toPandas()[[frontend]], quantile=0.1)
     mss = MSSelector(anomalytraces, bandwidth=bandwidth, min_bin_freq=min_bin_freq)
     split_points = mss.select(frontend)
 
     ra = RangeAnalysis(explain, split_points)
     _, _, solutions = ra.explain()
-
+    
     return list(map(itemgetter(0), solutions))
 
 
 def thresholdsdict(traces):
-    anomalytraces = traces[traces[frontend] > sla]
-    min_bin_freq = anomalytraces.count() * 0.05
+    anomalytraces = traces[traces[frontend]>sla]
+    min_bin_freq = anomalytraces.count()*0.05
     rpcs = get_rpcs(traces)
     mss = MSSelector(traces, min_bin_freq=min_bin_freq)
     return mss.select_foreach(rpcs)
@@ -76,6 +80,7 @@ def ga(traces, sla):
     return split_based(traces, sla, explain)
 
 
+
 def bnb(traces, sla):
     td = thresholdsdict(traces)
     explain = BranchAndBound(traces, frontend, td).compute
@@ -84,7 +89,7 @@ def bnb(traces, sla):
 
 def decaf(traces, sla):
     rpcs = get_rpcs(traces)
-    dc = DeCaf(traces, frontend, rpcs, sla)
+    dc = DeCaf(traces, frontend, rpcs,sla)
     return dc.explain(10)
 
 
@@ -107,44 +112,47 @@ def qclust(traces, rpcs, num_pat, df):
     return q.metrics()
 
 
+
 def qkclust(traces, rpcs, num_pat, dflist):
-    qs = [qclust(traces, rpcs, num_pat, df) for df in dflist]
+    qs =[ qclust(traces, rpcs, num_pat, df) for df in dflist]
     return max(qs, key=itemgetter(0))
 
 
 def experiment(algo, q, traces, num_pat):
     rpcs = get_rpcs(traces)
-    sla = traces[traces['experiment'] < num_pat].toPandas().min()[frontend]
-
+    sla = traces[traces['experiment']<num_pat].toPandas().min()[frontend]
+    
     t1 = time.perf_counter()
-
+    
     res = algo(traces, sla)
-
+    
     t2 = time.perf_counter()
-
+    
     fm, prec, rec = q(traces, rpcs, num_pat, res)
     t = t2 - t1
     return fm, prec, rec, t
 
 
-num_rep = 20
-algorithms = [("gra", gra, qopt, num_rep),
-              ("ga", ga, qopt, num_rep),
-              ("bnb", bnb, qopt, 1),
-              ("decaf", decaf, qopt, num_rep),
-              ("kmeans", kmeans, qkclust, num_rep),
-              ("hierarchical", hierarchical, qkclust, num_rep)
-              ]
+num_rep =1
+algorithms =[("gra", gra, qopt, num_rep),
+             ("ga", ga, qopt, num_rep),
+             ("bnb", bnb, qopt, 1),
+             ("decaf", decaf, qopt, num_rep),
+             ("kmeans", kmeans, qkclust, num_rep),
+             ("hierarchical", hierarchical, qkclust, num_rep)
+            ]
 
-for i in ['00', '05', '10', '15', '20']:
-    datapath = '../../datasets/trainticket/rq2_{}/'.format(i)
-    respath = '../../results/trainticket/rq2_{}.csv'.format(i)
+
+
+for i in [10, 20, 40, 80, 160]:
+    datapath = '../../datasets/trainticket/rq4_{}/'.format(i)
+    respath = '../../results/trainticket/rq4_{}.csv'.format(i)
     res = []
-    exps = pd.read_csv(datapath + '/experiments.csv', ';', header=None)
+    exps = pd.read_csv( datapath+'/experiments.csv', ';', header=None)
     for row in exps.iterrows():
-        num_pat, from_, to = [int(x) for x in row[1]]
+        num_pat, from_, to =[int(x) for x in row[1]]
         traces = (spark.read.option('mergeSchema', 'true')
-                  .parquet(datapath + '/%d_%d.parquet' % (from_, to)))
+                  .parquet(datapath+'/%d_%d.parquet' % (from_, to)))
 
         sla = traces[traces['experiment'] < num_pat].toPandas().min()[frontend]
         for name, algo, q, num_rep in algorithms:
@@ -155,9 +163,12 @@ for i in ['00', '05', '10', '15', '20']:
                 print('Experiment nr.', row[0])
                 fm, prec, rec, t = experiment(algo, q, traces, num_pat)
                 print('Quality: ', fm, prec, rec)
-                print('Execution time', t, '\n\n\n')
-                res.append([row[0], j, num_pat, name, fm, prec, rec, t])
-    df = pd.DataFrame(res, columns=['exp', 'trial', 'num_pat', 'algo', 'fmeasure', 'precision', 'recall', 'time'])
+                print('Execution time', t, '\n\n\n')            
+                res.append([row[0],j, num_pat, name, fm, prec, rec, t])
+    df = pd.DataFrame(res, columns=['exp','trial','num_pat', 'algo','fmeasure', 'precision', 'recall', 'time' ])
     df.to_csv(respath, index=None, header=True)
 
 spark.stop()
+
+
+
