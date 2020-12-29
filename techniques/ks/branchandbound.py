@@ -1,5 +1,5 @@
 from collections import deque
-from ks.metrics import Metrics, FeatAndMetrics
+from ..ks.metrics import Metrics, FeatAndMetrics
 
 
 class Node:

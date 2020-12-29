@@ -5,9 +5,9 @@ from os import cpu_count
 
 from deap import creator, base, tools, algorithms
 
-from ylatency.graoperators import Operator
-from ylatency.grautils import FitnessUtils
-from ylatency.thresholds import Hashtable
+from ..ylatency.graoperators import Operator
+from ..ylatency.grautils import FitnessUtils
+from ..ylatency.thresholds import Hashtable
 
 
 class ParallelHelper:

@@ -1,8 +1,8 @@
 from deap import base, creator, tools, algorithms
 import copy
-from ylatency.gautils import Operators, FitnessUtils
+from ..ylatency.gautils import Operators, FitnessUtils
 
-from ylatency.thresholds import Hashtable
+from ..ylatency.thresholds import Hashtable
 
 
 class GAImpl:
