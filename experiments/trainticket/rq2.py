@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+
 import pandas as pd
 from experiments.utils import sparksession, Q, QClust
 from techniques import DeCaf, GeneticRangeAnalysis, MSSelector, RangeAnalysis, GA, BranchAndBound
@@ -9,6 +10,7 @@ from operator import itemgetter
 import time
 import random
 import numpy as np
+
 from sklearn.cluster import estimate_bandwidth
 
 frontend = 'ts-travel-service_queryInfo'
@@ -134,27 +136,29 @@ algorithms = [("gra", gra, qopt, num_rep),
               ("hierarchical", hierarchical, qkclust, num_rep)
               ]
 
-datapath = '../../datasets/trainticket/rq1/'
-respath = '../../results/trainticket/rq1.csv'
-res = []
-exps = pd.read_csv(datapath + '/experiments.csv', ';', header=None)
-for row in exps.iterrows():
-    num_pat, from_, to = [int(x) for x in row[1]]
-    traces = (spark.read.option('mergeSchema', 'true')
-              .parquet(datapath + '/%d_%d.parquet' % (from_, to)))
+for i in ['00', '05', '10', '15', '20']:
+    datapath = '../../datasets/trainticket/rq2_{}/'.format(i)
+    respath = '../../datasets/trainticket/rq2_{}.csv'.format(i)
+    res = []
+    exps = pd.read_csv(datapath + '/experiments.csv', ';', header=None)
+    for row in exps.iterrows():
+        num_pat, from_, to = [int(x) for x in row[1]]
+        traces = (spark.read.option('mergeSchema', 'true')
+                  .parquet(datapath + '/%d_%d.parquet' % (from_, to)))
 
-    sla = traces[traces['experiment'] < num_pat].toPandas().min()[frontend]
-    for name, algo, q, num_rep in algorithms:
-        random.seed(33)
-        np.random.seed(33)
-        for j in range(num_rep):
-            print('Algorithm ', name)
-            print('Experiment nr.', row[0])
-            fm, prec, rec, t = experiment(algo, q, traces, num_pat)
-            print('Quality: ', fm, prec, rec)
-            print('Execution time', t, '\n\n\n')
-            res.append([row[0], j, num_pat, name, fm, prec, rec, t])
-df = pd.DataFrame(res, columns=['exp', 'trial', 'num_pat', 'algo', 'fmeasure', 'precision', 'recall', 'time'])
-df.to_csv(respath, index=None, header=True)
+        print(traces.count())
+        sla = traces[traces['experiment'] < num_pat].toPandas().min()[frontend]
+        for name, algo, q, num_rep in algorithms:
+            random.seed(33)
+            np.random.seed(33)
+            for j in range(num_rep):
+                print('Algorithm ', name)
+                print('Experiment nr.', row[0])
+                fm, prec, rec, t = experiment(algo, q, traces, num_pat)
+                print('Quality: ', fm, prec, rec)
+                print('Execution time', t, '\n\n\n')
+                res.append([row[0], j, num_pat, name, fm, prec, rec, t])
+    df = pd.DataFrame(res, columns=['exp', 'trial', 'num_pat', 'algo', 'fmeasure', 'precision', 'recall', 'time'])
+    df.to_csv(respath, index=None, header=True)
 
 spark.stop()
