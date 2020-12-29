@@ -3,16 +3,22 @@
 Replication package of the work "DeLag: Detecting Latency Degradation Patterns in Service-based Systems".
 
 ## Requirements
-- Python >= 3.6
+- Python 3.6
+- Java 8
+- Apache Spark 2.3.1 (set `$SPARK_HOME` env variable with the folder path))
+- Elasticsearch for Spark 2.X 7.6.0 (set `$ES_SPARK` env variable with the jar path)
+- Maven 3.6.0 (only for datasets generation)
+- Docker 18.03 (only for datasets generation)
 
-Use the following command to install dependencies
-
+Use the following command to install Python dependencies
 ```
 pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-## Content
+The generation of datasets and the experimentation of techniques were performed on a dual Intel Xeon CPU E5-2650 v3 at 2.30GHz, totaling 40 cores and 80GB of RAM.
+Therefore we recommend to run scripts on a machine similar specs.
+
 #### Datasets
 The `datasets` folder contains the datasets of traces used in the evaluation (in parquet format).
 
@@ -30,9 +36,3 @@ The `results` folder contains the results of our experimentation.
 
 #### Scripts
 The `scripts` folder contains the Python scripts used to generate the figures and tables of the paper.
-
-
-
-
-
-
