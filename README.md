@@ -17,7 +17,7 @@ pip install -r requirements.txt
 ```
 
 The generation of datasets and the experimentation of techniques were performed on a dual Intel Xeon CPU E5-2650 v3 at 2.30GHz, totaling 40 cores and 80GB of RAM.
-Therefore we recommend to run scripts on a machine similar specs.
+Therefore we recommend to run scripts on a machine with similar specs.
 
 #### Datasets
 The `datasets` folder contains the datasets of traces used in the evaluation (in parquet format).
