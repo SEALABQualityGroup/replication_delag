@@ -29,7 +29,7 @@ The `datasets-generation` folder contains the bash scripts used to generate the 
 The `techniques` folder contains the implementation of DeLag, CoTr, KrSa and DeCaf. 
 
 #### Experiments
-The `experiments` folder contains the Python scripts to executes DeLag and baselines techniques on the generated datasets to answer our RQs.
+The `experiments` folder contains the Python scripts to executes DeLag and baselines techniques to answer our RQs.
 
 #### Results 
 The `results` folder contains the results of our experimentation.
