@@ -31,7 +31,11 @@ Each row of each dataset represents a request and contains:
 The `datasets-generation` folder contains the bash scripts used to generate the datasets used in the evaluation.
 
 #### Techniques
-The `techniques` folder contains the implementation of DeLag, CoTr, KrSa and DeCaf. DeLag is implemented by the class `GeneticRangeAnalysis`, CoTr by the classes `RangeAnalysis` and `GA`, `KrSa` by the classes `RangeAnalysis` and `BranchAndBound`, and  DeCaf by the class `DeCaf`.
+The `techniques` folder contains the implementations of DeLag, CoTr, KrSa and DeCaf. In the following you can find the main Python classes used to implement each technique:
+- `DeLag`: class `GeneticRangeAnalysis`
+- `CoTr`: classes `RangeAnalysis` and `GA`
+- `KrSa`: classes `RangeAnalysis` and `BranchAndBound`
+- `DeCaf`: class `DeCaf`.
 
 #### Experiments
 The `experiments` folder contains the Python scripts used to execute DeLag and baselines techniques on the generated datasets.
