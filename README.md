@@ -21,6 +21,11 @@ We recommend to run the scripts of this replication package on a machine with si
 
 #### Datasets
 The `datasets` folder contains the datasets of traces used in the evaluation (in parquet format).
+Each row of each dataset represents a request and contains:
+- `traceId`: the ID of the request:
+- `[requestLatency]`: the overall latency of the request. It is represented by the column `ts-travel-service_queryInfo` in the Train-Ticket case study and by the column `HomeControllerHome` in the E-Shopper case study.
+- `experiment`: if equal to `0` (resp. `1`) the request is affected by the ADC <img src="https://render.githubusercontent.com/render/math?math=A_{1}"> (resp. <img src="https://render.githubusercontent.com/render/math?math=A_{2}">) otherwise is not affected by any ADCs.
+- `[RPC]`: the cumulative execution time of `[RPC]` within the request.
 
 #### Datasets generation
 The `datasets-generation` folder contains the bash scripts used to generate the datasets used in the evaluation.
