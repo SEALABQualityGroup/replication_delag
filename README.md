@@ -45,7 +45,7 @@ The `results` folder contains the results of our experimentation. Each row of ea
 - `precision`: effectiveness measure - Precision (<img src="https://render.githubusercontent.com/render/math?math=Q_{prec}">)
 - `recall`: effectiveness measure - Recall (<img src="https://render.githubusercontent.com/render/math?math=Q_{rec}">)
 - `fmeasure`: effectiveness measure - F1-score  (<img src="https://render.githubusercontent.com/render/math?math=Q_{F1}">)
-- `time`: the execution time
+- `time`: execution time in seconds
 
 #### Scripts
 The `scripts` folder contains the Python scripts used to generate the figures and tables of the paper.
