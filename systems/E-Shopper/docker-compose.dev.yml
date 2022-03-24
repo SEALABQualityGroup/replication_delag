@@ -63,6 +63,8 @@ services:
     image: selabaq/items:sleuth
     depends_on:
       - "items-db"
+    ports:
+      - "5566:5566"
   items-db:
     build:
       context: ./items-db
@@ -105,6 +107,8 @@ services:
     image: selabaq/products:sleuth
     depends_on:
       - "products-db"
+    ports:
+      - "4444:4444"
   products-db:
     build:
       context: ./products-db
