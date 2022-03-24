@@ -1,0 +1,52 @@
+version: '3'
+
+services:
+  wl-booking:
+    image: ts/workload
+    build: workload
+    volumes:
+      - ./workload:/mnt/locust
+    command: -f /mnt/locust/locustfile_booking.py --headless -H http://ts-ui-dashboard:8080
+    networks:
+      - trainticket_my-network
+
+  wl-cancelnorefund:
+    image: ts/workload
+    build: workload
+    volumes:
+      - ./workload:/mnt/locust
+    command: -f /mnt/locust/locustfile_cancelnorefund.py --headless -H http://ts-ui-dashboard:8080
+    networks:
+      - trainticket_my-network
+
+  wl-consignticket:
+    image: ts/workload
+    build: workload
+    volumes:
+      - ./workload:/mnt/locust
+    command: -f /mnt/locust/locustfile_consignticket.py --headless -H http://ts-ui-dashboard:8080
+    networks:
+      - trainticket_my-network
+
+  wl-nologin:
+    image: ts/workload
+    build: workload
+    volumes:
+      - ./workload:/mnt/locust
+    command: -f /mnt/locust/locustfile_nologin.py --headless -H http://ts-ui-dashboard:8080
+    networks:
+      - trainticket_my-network
+
+  wl-refundvoucher:
+    image: ts/workload
+    build: workload
+    volumes:
+      - ./workload:/mnt/locust
+    command: -f /mnt/locust/locustfile_refundvoucher.py --headless -H http://ts-ui-dashboard:8080
+    networks:
+      - trainticket_my-network
+
+
+networks:
+  trainticket_my-network:
+    external: true

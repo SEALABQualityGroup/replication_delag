@@ -234,7 +234,7 @@ public class PreserveServiceImpl implements PreserveService {
         notifyInfo.setSeatClass(SeatClass.getNameByCode(order.getSeatClass()));
         notifyInfo.setStartingTime(order.getTravelTime().toString());
 
-        sendEmail(notifyInfo, headers);
+        //sendEmail(notifyInfo, headers);
 
         return returnResponse;
     }

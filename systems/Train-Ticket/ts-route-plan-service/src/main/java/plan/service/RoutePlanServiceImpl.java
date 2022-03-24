@@ -40,8 +40,12 @@ public class RoutePlanServiceImpl implements RoutePlanService {
 
         //2.Sort by second-class seats
         ArrayList<TripResponse> finalResult = new ArrayList<>();
-        finalResult.addAll(highSpeed);
-        finalResult.addAll(normalTrain);
+        if (highSpeed != null){
+            finalResult.addAll(highSpeed);
+        }
+        if (normalTrain != null){
+            finalResult.addAll(normalTrain);
+        }
 
         float minPrice;
         int minIndex = -1;
@@ -314,7 +318,7 @@ public class RoutePlanServiceImpl implements RoutePlanService {
                 });
 
         ArrayList<TripResponse> tripResponses = re.getBody().getData();
-        RoutePlanServiceImpl.LOGGER.info("[Route Plan Get Trip][Size] {}", tripResponses.size());
+        //RoutePlanServiceImpl.LOGGER.info("[Route Plan Get Trip][Size] {}", tripResponses.size());
         return tripResponses;
     }
 

@@ -1,0 +1,42 @@
+{
+    "TimeLimit": 3600,
+
+    "UserNoLogin":{
+        "users": 8,
+        "peaks": [
+            [0.35, 16],
+            [0.7, 12]
+        ]
+    },
+
+    "UserBooking":{
+        "users": 6,
+        "peaks": [
+            [0.3, 9],
+            [0.6, 12]
+        ]
+    },
+
+    "UserConsignTicket":{
+        "users": 3,
+        "peaks": [
+            [0.25, 6],
+            [0.7, 4]
+
+        ]
+    },
+
+    "UserCancelNoRefund":{
+        "users": 2,
+        "peaks": [
+            [0.8, 4]
+        ]
+    },
+
+    "UserRefundVoucher":{
+        "users": 1,
+        "peaks": [
+            [0.25, 2]
+        ]
+    }
+}

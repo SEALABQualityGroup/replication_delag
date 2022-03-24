@@ -557,6 +557,7 @@ services:
       - ES_SERVER_URLS=http://elasticsearch:9200
       - PROCESSOR_JAEGER_COMPACT_SERVER_QUEUE_SIZE=10000000
       - COLLECTOR_QUEUE_SIZE=10000000
+      - ES_MAX_SPAN_AGE=720h0m0s
     ports:
       - 16686:16686
     deploy:
@@ -574,6 +575,7 @@ services:
       - ES_NODES=http://localhost:9200
       - ES_USERNAME=user
       - ES_PASSWORD=password
+      - ES_JAVA_OPTS=-Xmx8g
     volumes:
       - esdata:/usr/share/elasticsearch/data
     ports:
