@@ -6,9 +6,11 @@ from glob import glob
 import shutil
 from functools import  reduce
 import operator
+import sys
 
 import pandas as pd
 
+sys.path.append('..')
 from experiments.utils import sparksession
 
 
@@ -81,8 +83,9 @@ for df, frontend, sla, res in foreach_reqtype(spark):
             
     patset_mask = reduce(operator.or_, pat_masks)
     f1, precision, recall = metrics(df, patset_mask, slo_mask)
-    overlap =  round(len(df[reduce(operator.and_, pat_masks)])/len(df[patset_mask]), 2) if len(pat_masks) > 1 else '-'
-    
+    num = sum(len(df[mask]) for mask in pat_masks) - len(df[patset_mask])
+    den = len(df[patset_mask]) * len(pat_masks)
+    overlap =  round(num/den, 2)
     f1_cell = '{:.3f} ({})'.format(f1, f1_cell.rstrip(' | '))
     prec_cell = '{:.3f} ({})'.format(precision, prec_cell.rstrip(' | ')).replace('.000', '')
     rec_cell = '{:.3f} ({})'.format(recall, rec_cell.rstrip(' | '))

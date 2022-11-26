@@ -1,11 +1,13 @@
 from glob import glob
 import json
+import sys
 
 from scipy import stats
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 
+sys.path.append('..')
 from experiments.utils import sparksession
 
 expname = 'trainticket'
@@ -66,7 +68,7 @@ for df, frontend, sla, res in foreach_reqtype(spark, expname):
     df = df[df[frontend]< df[frontend].quantile(0.99)].copy()
     label = frontend.replace('_', ' $\diamond$ ').replace('ts-', 'train-ticket $\diamond$ ')
     width, heigth = plt.gcf().get_size_inches()
-    fig, axs = plt.subplots(1,2,figsize=(width*len(res),heigth))
+    fig, axs = plt.subplots(1,len(res),figsize=(width*len(res),heigth))
     for ax, pat in zip(axs,res):
         print('-'*100)
         satisfy_ = df.apply(lambda r: satisfy(r, pat), axis='columns')
