@@ -1,9 +1,9 @@
 #!/bin/bash
-
-DIR="../datasets/trainticket/workload"
+source activate ../../env/bin/activate
+DIR="../../datasets/trainticket/workload"
 mkdir $DIR
 
-cd ../systems/trainticket
+cd ../../systems/Train-Ticket
 
 docker-compose -f docker-compose-workload.yml down
 COMPOSE_HTTP_TIMEOUT=200 docker-compose down && \
@@ -24,7 +24,7 @@ docker-compose -f docker-compose-workload.yml build
 docker run --network host -v $PWD/workload:/mnt/locust ts/workload -f /mnt/locust/locustfile_pptam.py --headless -H http://localhost:8080 -u 20 -r 1 -t 30s
 sleep 10s
 
-
+nohup python ../../datasets-generation/profiler.py $DIR/profile.csv &
 t1=$( date +%s )
 docker-compose -f docker-compose-workload.yml up
 t2=$( date +%s )
