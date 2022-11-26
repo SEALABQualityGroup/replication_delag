@@ -1,11 +1,11 @@
 #!/bin/bash
 
 
-DIR="../datasets/eshopper/workload"
+DIR="../../datasets/eshopper/workload"
 mkdir $DIR
 
 
-cd ../systems/eshopper
+cd ../../systems/E-Shopper
 
 mvn clean install
 docker-compose -f docker-compose.dev.yml build
@@ -22,6 +22,7 @@ locust --host=http://localhost  --no-web -c 20 -r 1 --run-time 30s
 docker-compose -f docker-compose.tracing.yml up -d zipkin
 sleep 5s
 
+nohup python ../../datasets-generation/profiler.py $DIR/profile.csv &
 t1=$( date +%s )
 $JMETER_HOME/bin/jmeter -n -t workload.jmx
 t2=$( date +%s )
