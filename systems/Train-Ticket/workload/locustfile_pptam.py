@@ -25,6 +25,8 @@ def random_date_generator():
 
 
 class Requests:
+    users = []
+
     def __init__(self, client):
         self.client = client
 
@@ -68,23 +70,31 @@ class Requests:
     def search_return(self):
         self.search_ticket(date.today().strftime(random_date_generator()), "Su Zhou", "Shang Hai")
 
-    def _create_user(self):
+    def _create_user(self, nouser):
         req_label = sys._getframe().f_code.co_name
+        head = {"Accept": "application/json", "Content-Type": "application/json"}
         document_num = None
-        self.client.post(url="/api/v1/adminuserservice/users", headers={"Authorization": self.bearer, "Accept": "application/json", "Content-Type": "application/json"}, json={"documentNum": document_num, "documentType": 0, "email": "string", "gender": 0, "password": "111111", "userName": "fdse_microservice"}, name=req_label)
+        response = self.client.post(url="/api/v1/users/login", headers=head, json={"username": "admin", "password": "222222"}, name=req_label + '_login')
+        response_as_json = response.json()["data"]
+        token = response_as_json["token"]
+        bearer = "Bearer " + token
+        self.client.post(url="/api/v1/adminuserservice/users", headers={"Authorization": bearer, "Accept": "application/json", "Content-Type": "application/json"}, json={"documentNum": document_num, "documentType": 0, "email": "string", "gender": 0, "password": "111111", "userName": "fdse_microservice{}".format(nouser)}, name=req_label)
+        Requests.users.append(nouser)
 
     def _navigate_to_client_login(self):
         req_label = sys._getframe().f_code.co_name
         self.client.get("/client_login.html", name=req_label)
 
     def login(self):
-        # self._create_user()
+        nouser = randint(1, 1000)
+        if nouser not in Requests.users:
+            self._create_user(nouser)
 
         self._navigate_to_client_login()
         req_label = sys._getframe().f_code.co_name
         start_time = time.time()
         head = {"Accept": "application/json", "Content-Type": "application/json"}
-        response = self.client.post(url="/api/v1/users/login", headers=head, json={"username": "fdse_microservice", "password": "111111"}, name=req_label)
+        response = self.client.post(url="/api/v1/users/login", headers=head, json={"username": "fdse_microservice{}".format(nouser), "password": "111111"}, name=req_label)
 
         response_as_json = response.json()["data"]
         if response_as_json is not None:
