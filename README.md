@@ -61,3 +61,6 @@ The `scripts` folder contains the Python scripts used to generate the figures an
 
 ### Systems
 The `systems` folder contains the two case study systems.
+
+### Licensing
+DeLag is &copy; 2022 University of L'Aquila and licensed under the GPLv3 license.
