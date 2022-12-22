@@ -1,6 +1,6 @@
-# DeLag: Detecting Latency Degradation Patterns in Service-based Systems
+# DeLag: Using Multi-Objective Optimization to Enhance the Detection of Latency Degradation Patterns in Service-based Systems
 
-Replication package of the work "DeLag: Detecting Latency Degradation Patterns in Service-based Systems".
+Replication package of the work "DeLag: Using Multi-Objective Optimization to Enhance the Detection of Latency Degradation Patterns in Service-based Systems". [arxiv](https://doi.org/10.48550/arXiv.2110.11155)
 
 **Requirements**
 - Python 3.6
