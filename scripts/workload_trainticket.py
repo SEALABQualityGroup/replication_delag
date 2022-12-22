@@ -49,7 +49,7 @@ def satisfy(row, pattern):
 
 
 for df, frontend, sla, _ in foreach_reqtype(spark, expname):
-        df = df[df[frontend]< df[frontend].quantile(0.99)]
+        df = df[df[frontend]< df[frontend].quantile(0.999)]
         
         label = frontend.replace('_', ' $\diamond$ ').replace('ts-', 'train-ticket $\diamond$ ')
         sns.histplot(df, x=frontend,  bins=50, color='whitesmoke')
@@ -65,10 +65,12 @@ for df, frontend, sla, _ in foreach_reqtype(spark, expname):
 no_pattern = 2
 
 for df, frontend, sla, res in foreach_reqtype(spark, expname):
-    df = df[df[frontend]< df[frontend].quantile(0.99)].copy()
+    displayed_patterns = 0
+    df = df[df[frontend]< df[frontend].quantile(0.999)].copy()
     label = frontend.replace('_', ' $\diamond$ ').replace('ts-', 'train-ticket $\diamond$ ')
     width, heigth = plt.gcf().get_size_inches()
-    fig, axs = plt.subplots(1,len(res),figsize=(width*len(res),heigth))
+    xsize = min(len(res), 2)
+    fig, axs = plt.subplots(1,xsize,figsize=(width*xsize,heigth))
     for ax, pat in zip(axs,res):
         print('-'*100)
         satisfy_ = df.apply(lambda r: satisfy(r, pat), axis='columns')
@@ -86,6 +88,10 @@ for df, frontend, sla, res in foreach_reqtype(spark, expname):
         ax.text(x=ax.get_xlim()[1],y=ax.get_ylim()[1]*0.7, s=pat_label, ha="right", va='center')
         ax.set_title('P$_{}$'.format(no_pattern))
         no_pattern += 1
+        displayed_patterns +=1
+        if displayed_patterns >=2:
+            no_pattern += len(res) - 2
+            break
         
     plt.tight_layout()
     plt.savefig('../figures/res_{}.pdf'.format(frontend))

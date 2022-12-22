@@ -3,8 +3,9 @@
 
 import json
 from glob import glob
-import shutil
+import re
 from functools import  reduce
+from itertools import combinations
 import operator
 import sys
 
@@ -50,6 +51,12 @@ def metrics(df, mask, slo_mask):
     f1 = 2 * (precision * recall) / (precision + recall)
     return f1, precision, recall
 
+def compute_overlap_num(df, pat_masks):
+    if len(pat_masks) <= 1:
+        return 0.0
+    masks = [mask1 & mask2 for mask1, mask2 in combinations(pat_masks, 2)]
+    mask = reduce(operator.or_, masks)
+    return len(df[mask])
 
 rows = []
 no_pattern = 1
@@ -72,9 +79,9 @@ for df, frontend, sla, res in foreach_reqtype(spark):
         f1, precision, recall = metrics(df, pat_mask, slo_mask)
         pat_name = 'P{}'.format(no_pattern)
         name += pat_name + ', '
-        f1_cell += '{}:{:.3f} | '.format(pat_name, f1)
-        prec_cell += '{}:{:.3f} | '.format(pat_name, precision)
-        rec_cell += '{}:{:.3f} | '.format(pat_name, recall)
+        f1_cell += '{}:{:.2f} | '.format(pat_name, f1).replace('.00', '')
+        prec_cell += '{}:{:.2f} | '.format(pat_name, precision).replace('.00', '')
+        rec_cell += '{}:{:.2f} | '.format(pat_name, recall).replace('.00', '')
 
         no_pattern += 1
 
@@ -83,12 +90,12 @@ for df, frontend, sla, res in foreach_reqtype(spark):
             
     patset_mask = reduce(operator.or_, pat_masks)
     f1, precision, recall = metrics(df, patset_mask, slo_mask)
-    num = sum(len(df[mask]) for mask in pat_masks) - len(df[patset_mask])
-    den = len(df[patset_mask]) * len(pat_masks)
-    overlap =  round(num/den, 2)
-    f1_cell = '{:.3f} ({})'.format(f1, f1_cell.rstrip(' | '))
+    num = compute_overlap_num(df, pat_masks) #sum(len(df[mask]) for mask in pat_masks) - len(df[patset_mask])
+    den = len(df[patset_mask]) #* len(pat_masks)
+    overlap =  str(round(num/den, 3)).replace('.000', '')
+    f1_cell = '{:.3f} ({})'.format(f1, f1_cell.rstrip(' | ')).replace('.000', '')
     prec_cell = '{:.3f} ({})'.format(precision, prec_cell.rstrip(' | ')).replace('.000', '')
-    rec_cell = '{:.3f} ({})'.format(recall, rec_cell.rstrip(' | '))
+    rec_cell = '{:.3f} ({})'.format(recall, rec_cell.rstrip(' | ')).replace('.000', '')
     name = '{' + name.rstrip(' ').rstrip(',') + '}'
 
     row = [req_kind, name, prec_cell, rec_cell, f1_cell, overlap]
@@ -98,7 +105,14 @@ for df, frontend, sla, res in foreach_reqtype(spark):
 
 with pd.option_context("max_colwidth", 1000):
     df =pd.DataFrame(rows, columns=['Request type', 'Pattern Set',  'Precision', 'Recall', 'F1-score', 'Overlap'])
-    df.to_csv('../tables/workload.csv', index=False)
+    print(df['F1-score'])
+    df['Request type'] = ["$RC_{}$".format(i) for i in range(1,5)]
+    repl = lambda matchobj: matchobj.group(0).replace("P", "P$_") + "$"
+    for col in ['Pattern Set',  'Precision', 'Recall', 'F1-score']:
+        df[col] = df[col].str.replace(r"P\d+", repl, regex=True)
+        df[col] = df[col].str.replace("|", "$\mid$")
+    df['Pattern Set'] = df['Pattern Set'].str.replace("{", "\{").str.replace("}", "\}")
+    df.to_latex('../tables/workload.tex', index=False, escape=False)
 
 
 spark.stop()

@@ -1,10 +1,13 @@
 from glob import glob
 import json
 import pandas as pd
+import sys
 
 import seaborn as sns
 import matplotlib.pyplot as plt
 from scipy import stats
+
+sys.path.append('..')
 from experiments.utils import sparksession
 
 expname = 'eshopper'
@@ -42,7 +45,7 @@ def satisfy(row, pattern):
 
 
 for df, frontend, sla, _ in foreach_reqtype(spark):
-        df = df[df[frontend]< df[frontend].quantile(0.99)]
+        df = df[df[frontend]< df[frontend].quantile(0.999)]
         
         label = 'e-shopper $\diamond$ web $\diamond$ home'
         sns.histplot(df, x=frontend,  bins=50, color='whitesmoke')
@@ -56,7 +59,7 @@ for df, frontend, sla, _ in foreach_reqtype(spark):
         plt.close()
 
 for df, frontend, sla, res in foreach_reqtype(spark):
-    df = df[df[frontend]< df[frontend].quantile(0.99)].copy()
+    df = df[df[frontend]< df[frontend].quantile(0.999)].copy()
     label = 'e-shopper $\diamond$ web $\diamond$ home'
 
     for pat in res:
