@@ -80,12 +80,49 @@ class Operator:
         cond1 = (cond[0], cond[1], t[cond[0]][split_index])
         cond2 = (cond[0], t[cond[0]][split_index], cond[2])
         return cond1, cond2
+    
+    def mut_rand_cond(self, expl):
+        # select random condition
+        cond = random.choice(expl)
+        # create shortcut for rpc thresholds
+        thresholds = self.thresholds_dict[cond[0]]
+        # get index of condition
+        i = expl.index(cond)
+        # modify e_min (1) or e_max (2)
+        j = random.randint(1,2)
+        # if there is only one threshold just return
+        if len(thresholds) <= 1:
+            return
+        # derive the index that will be subject to increment or decrement    
+        z = thresholds.index(cond[j])
+        # if is the first index increment
+        if z==0:
+            z+=1
+        # if is the last index decrement
+        elif z==len(thresholds)-1:
+            z-=1
+        else:
+            # randomly choose to increment or decrement the index
+            if random.choice([True, False]):
+                z +=1
+            else:
+                z -=1
+        # create a modifiable copy of the original condition    
+        newcond = list(cond)
+        # replace the e_min (or e_max) with the mutate value 
+        newcond[j] = thresholds[z]
+        # replace the original condition with the mutated condition  in the explanation
+        expl[i] = tuple(newcond)
+            
+
 
     def mut_expl(self, expl):
-        choice = random.randrange(2)
+        choice = random.randrange(3)
         if choice == 0 and len(expl) > 1:
             expl.remove(random.choice(expl))
-        elif choice == 1:
+        elif choice == 1 and len(expl) > 1:
+            self.mut_rand_cond(expl)
+        else:
             self.mut_expl_addcond(expl)
 
     def mut_expl_addcond(self, expl):

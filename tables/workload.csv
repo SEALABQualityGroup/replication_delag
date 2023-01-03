@@ -1,5 +1,0 @@
-Request type,Pattern Set,Precision,Recall,F1-score,Overlap
-e-shopper__web__home,{P1},0.951 (P1:0.951),0.158 (P1:0.158),0.271 (P1:0.271),0.0
-train-ticket___travel-service__queryInfo,"{P2, P3}",1 (P2:1 | P3:1),0.999 (P2:0.652 | P3:0.346),0.999 (P2:0.790 | P3:0.514),0.0
-train-ticket__travel-plan-service__getByCheapest,"{P4, P5, P6, P7}",1 (P4:1 | P5:1 | P6:1 | P7:1),0.998 (P4:0.329 | P5:0.670 | P6:0.150 | P7:0.179),0.999 (P4:0.495 | P5:0.802 | P6:0.260 | P7:0.304),0.08
-train-ticket__preserve-service__preserve,"{P8, P9}",1 (P8:1 | P9:1),0.369 (P8:0.234 | P9:0.234),0.539 (P8:0.379 | P9:0.379),0.13
